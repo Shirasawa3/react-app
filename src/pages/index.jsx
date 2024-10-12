@@ -10,11 +10,12 @@ export default function Home() {
   const [count, setCount] = useState(0);
   const [text, setText] = useState('');
   const [isShow, setIsShow] = useState(true);
+  const [array, setArray] = useState([]);
 
   const handleClick = useCallback((e) => {
     console.log(e);
     if (count < 10) {
-      setCount(count => count + 1);
+      setCount(prevCount => prevCount + 1);
     }
   }, [count]); // 第2引数の配列内の変数が変更された時に関数が再生成される
 
@@ -27,8 +28,18 @@ export default function Home() {
   }, []);
 
   const handleDisplay = useCallback(() => {
-    setIsShow(isShow => !isShow);
+    setIsShow(prevIsShow => !prevIsShow);
   }, []);
+
+  const handleAdd = useCallback(() => {
+    setArray((prevArray) => {
+      if (prevArray.some(item => item === text)) {
+        alert('同じ要素が既に存在します');
+        return prevArray;
+      }
+      const newArayy = [...prevArray, text];
+      return newArayy;
+    })} ,[text]);
   
   useEffect(() => {
     // マウント時の処理
@@ -47,6 +58,14 @@ export default function Home() {
       <button onClick={handleClick}>カウントアップ</button>
       <button onClick={handleDisplay}>{isShow ? '非表示' : '表示'}</button>
       <input type="text" value={text} onChange={handleChange} />
+      <button onClick={handleAdd}>追加</button>
+      <ul>
+        {array.map((item) => {
+          return (
+            <li key={item}>{item}</li>
+          );
+        })}
+      </ul>
       <Headline title="Index Page" page="index" onClick={() => {alert('クリック')}}/> 
       <Footer />
       <Links />
