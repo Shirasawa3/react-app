@@ -8,6 +8,8 @@ import { useState } from "react";
 
 export default function Home() {
   const [count, setCount] = useState(0);
+  const [text, setText] = useState('');
+  const [isShow, setIsShow] = useState(true);
 
   const handleClick = useCallback((e) => {
     console.log(e);
@@ -15,6 +17,18 @@ export default function Home() {
       setCount(count => count + 1);
     }
   }, [count]); // 第2引数の配列内の変数が変更された時に関数が再生成される
+
+  const handleChange = useCallback((e) => {
+    if (e.target.value.length > 5) {
+      alert('5文字以内にしてください');
+      return;
+    }
+    setText(e.target.value);
+  }, []);
+
+  const handleDisplay = useCallback(() => {
+    setIsShow(isShow => !isShow);
+  }, []);
   
   useEffect(() => {
     // マウント時の処理
@@ -29,8 +43,10 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <h3>{count}</h3>
+      {isShow ? <h3>{count}</h3> : null}
       <button onClick={handleClick}>カウントアップ</button>
+      <button onClick={handleDisplay}>{isShow ? '非表示' : '表示'}</button>
+      <input type="text" value={text} onChange={handleChange} />
       <Headline title="Index Page" page="index" onClick={() => {alert('クリック')}}/> 
       <Footer />
       <Links />
