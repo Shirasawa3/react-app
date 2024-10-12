@@ -8,7 +8,7 @@ const Headline = (props) => {
 
       <button onClick={props.onClick}>ボタン</button>
     </div>
-  )
+  );
 }
 
 export { Headline }
