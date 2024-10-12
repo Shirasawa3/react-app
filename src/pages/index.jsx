@@ -11,8 +11,10 @@ export default function Home() {
 
   const handleClick = useCallback((e) => {
     console.log(e);
-    setCount(count => count + 1);
-  }, []);
+    if (count < 10) {
+      setCount(count => count + 1);
+    }
+  }, [count]); // 第2引数の配列内の変数が変更された時に関数が再生成される
   
   useEffect(() => {
     // マウント時の処理
@@ -22,7 +24,7 @@ export default function Home() {
     return () => {
       document.body.style.backgroundColor = '';
     };
-  }, []);
+  }, []); // 第2引数の配列内の変数が変更された時にアンマウント時の処理 → マウント時の処理の順番で実行される
 
   return (
     <div>
